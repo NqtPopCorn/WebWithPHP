@@ -1,5 +1,4 @@
 <?php
-
     $db_server = "localhost";
     $db_user = "root";
     $db_pass = "123456";
@@ -12,9 +11,15 @@
                            $db_name);
 
     if($conn) {
-        echo "You're connected";
-
-        //close connection
+        mysqli_query($conn, "SET NAMES 'utf8'");
+        $sql = "select * from theloai";
+        $query = mysqli_query($conn, $sql);
+        $count = 0;
+        while($row = mysqli_fetch_array($query)) {
+            $maTL = $row["maTL"];
+            $tenTL = $row["tenTL"];
+            echo "<a href='index.php?theloai=$maTL'>$tenTL</a>";
+        }
         $conn -> close();
     }
     else {

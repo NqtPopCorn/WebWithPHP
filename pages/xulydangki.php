@@ -9,7 +9,7 @@
     
     $db_server = "localhost";
     $db_user = "root";
-    $db_pass = "123456";
+    $db_pass = "";
     $db_name = "doanweb2";
     $conn = "";
 
@@ -20,19 +20,16 @@
 
     if($conn) {
         mysqli_query($conn, "SET NAMES 'utf8'");
-        $sql = "select * from `taikhoan` where `mand`='{$username}'";
+        $sql = "select * from `taikhoan` where `tendangnhap`='{$username}'";
         try {
             $query = mysqli_query($conn, $sql);
-            if($query -> num_rows > 0) {
-                header("Location: ../index.php?modalError=dangki&error=exist");
-            }
-            else {
-                if(validate() == true) {
-                    $sql = "insert into `taikhoan`(`mand`, `matkhau`, `email`, `sdt`, `ngaytao`) values('{$username}' , '{$pwd1}', '{$email}', '{$sdt}', CURRENT_DATE())";
-                    $query = mysqli_query($conn, $sql);
-                    header("Location: ../index.php?modalSuccess=dangki");
-                    echo "Error: " . $e;
-                }
+            if(validate($query) == true) {
+                $sql = "insert into `taikhoan`(`tendangnhap`, `matkhau`, `ngaytao`, `quyen`) values('{$username}' , '{$pwd1}', CURRENT_DATE(), 0);";
+                $query = mysqli_query($conn, $sql);
+                echo "<script>
+                    $('#statusModal .modal-header').html('Thành công');
+                    $('#statusModal').modal('show');
+                </script>";
             }
         } catch (Exception $e) {
             echo "Error: " . $e;
@@ -44,24 +41,31 @@
         echo "Could not connected";
     }
 
-    function validate() {
+    function validate($query) {
         global $username, $pwd1, $pwd2, $email, $sdt, $emailReg, $sdtReg;
-        if($username == "" || $pwd1 == "" || $pwd2 == "" || $email == "" || $sdt == "") {
-            header("Location: ../index.php?modalError=dangki&error=empty");
-            return false;
+        $result = true;
+        if($query -> num_rows > 0) {
+            echo "Username existed<br>";
+            $result = false;
         }
-        else if($pwd1 != $pwd2) {
-            header("Location: ../index.php?modalError=dangki&error=pwd");
-            return false;
+        if($username == "" || $pwd1 == "" || $pwd2 == "" || $email == "") {
+            echo "Empty field<br>";
+            $result = false;
         }
-        else if(preg_match($emailReg, $email) == false) {
-            header("Location: ../index.php?modalError=dangki&error=email");
-            return false;
+        else {
+            if($pwd1 != $pwd2) {
+                echo "Password not match<br>";
+                $result = false;
+            }
+            if(preg_match($emailReg, $email) == false) {
+                echo "Invalid email<br>";
+                $result = false;
+            }
+            if(preg_match($sdtReg, $sdt) == false and $sdt != "") {
+                echo "Invalid phone number<br>";
+                $result = false;
+            }
         }
-        else if(preg_match($sdtReg, $sdt) == false) {
-            header("Location: ../index.php?modalError=dangki&error=sdt");
-            return false;
-        }
-        return true;
+        return $result;
     }
 ?>

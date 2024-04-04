@@ -49,9 +49,10 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 10px;
+    align-items: center;
     gap: 10px;  
     border: 2px solid rgb(0, 0, 149);
+    height: 1200px;
 }
 .right-content{
     background-color: rgb(85, 255, 0);
@@ -62,7 +63,6 @@
         flex-direction: column;
     }
     .content{
-        padding: 4px;
         gap: 4px;  
     }
 }
@@ -75,35 +75,23 @@
     gap: 4px;
 
 }
-.signup a{
-    display: block;
-    color: black;
-    background-color: burlywood;
-    border: 2px solid;
-}
-
-.frmTinhtoan {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#frmdangki {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    right:0;
-    bottom:0;
-    z-index:10;
-    display:flex;
-    justify-content: center; 
-    align-items: center;
-    background-color: #00000066;
-}
 
 .html {
     position: relative;
 }
-
+.frmHeader {
+    background-color: #0F3A4E; 
+    color: white;
+}
+.btn-close {
+    position: absolute; 
+    right: calc(var(--bs-modal-header-padding-x));
+}
+.btn.submitBtn {
+    color: white;
+    background-color: #0F3A4E;
+}
+.btn.submitBtn:hover {
+    color: #0D2D3D;
+    background-color: #C8DFEA;
+}  

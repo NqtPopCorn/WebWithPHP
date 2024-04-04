@@ -12,7 +12,5 @@
     else if(isset($_GET['theloai'])) {
         include("./dbSanpham.php");
     }
-    else {
-        echo "No option";
-    }
+    
 ?>
